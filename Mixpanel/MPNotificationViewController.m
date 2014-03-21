@@ -177,20 +177,20 @@
     _okayButton.transform = transform;
 
     [UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _titleView.transform = CGAffineTransformIdentity;
-        _titleView.alpha = 1.0f;
-        _bodyView.transform = CGAffineTransformIdentity;
-        _bodyView.alpha = 1.0f;
-        _okayButton.transform = CGAffineTransformIdentity;
-        _okayButton.alpha = 1.0f;
-        _imageView.transform = CGAffineTransformIdentity;
-        _imageView.alpha = 1.0f;
-        _bgMask.alpha = 1.0f;
+        self->_titleView.transform = CGAffineTransformIdentity;
+        self->_titleView.alpha = 1.0f;
+        self->_bodyView.transform = CGAffineTransformIdentity;
+        self->_bodyView.alpha = 1.0f;
+        self->_okayButton.transform = CGAffineTransformIdentity;
+        self->_okayButton.alpha = 1.0f;
+        self->_imageView.transform = CGAffineTransformIdentity;
+        self->_imageView.alpha = 1.0f;
+        self->_bgMask.alpha = 1.0f;
     } completion:nil];
 
     [UIView animateWithDuration:duration delay:0.15f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _closeButton.transform = CGAffineTransformIdentity;
-        _closeButton.alpha = 1.0f;
+        self->_closeButton.transform = CGAffineTransformIdentity;
+        self->_closeButton.alpha = 1.0f;
     } completion:nil];
 }
 
@@ -228,7 +228,7 @@
         CGPoint viewDistance = CGPointMake(viewEnd.x - _viewStart.x, viewEnd.y - _viewStart.y);
         CGFloat distance = sqrtf(viewDistance.x * viewDistance.x + viewDistance.y * viewDistance.y);
         [UIView animateWithDuration:(distance / 500.0f) delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-            _imageView.layer.position = _viewStart;
+            self->_imageView.layer.position = self->_viewStart;
         } completion:nil];
     }
 }
@@ -381,9 +381,9 @@
         [UIView animateWithDuration:0.1f animations:^{
             self.view.frame = CGRectMake(0.0f, topFrame.size.height - MPNotifHeight, topFrame.size.width, MPNotifHeight * 3.0f);
         } completion:^(BOOL finished) {
-            _position = self.view.layer.position;
+            self->_position = self.view.layer.position;
             [self performSelector:@selector(animateImage) withObject:nil afterDelay:0.1];
-            _canPan = YES;
+            self->_canPan = YES;
         }];
     }
 }
@@ -468,7 +468,7 @@
                 [strongDelegate notificationController:self wasDismissedWithStatus:NO];
             } else {
                 [UIView animateWithDuration:0.2f animations:^{
-                    self.view.layer.position = _position;
+                    self.view.layer.position = self->_position;
                 }];
             }
         }
@@ -618,7 +618,7 @@
     srand(124);
 
     for(NSUInteger i = 0; i < bits; ++i) {
-        rgba[i] = (rand() % 8);
+        rgba[i] = (arc4random() % 8);
     }
 
     CGContextRef noise = CGBitmapContextCreate(rgba, (NSUInteger)fabs(self.bounds.size.width), (NSUInteger)fabs(self.bounds.size.height), 8, (NSUInteger)fabs(self.bounds.size.width), NULL, (CGBitmapInfo)kCGImageAlphaOnly);

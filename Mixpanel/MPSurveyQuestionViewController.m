@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
     CGSize constraintSize = CGSizeMake(promptWidth, CGFLOAT_MAX);
 
     // Lower prompt font size until it fits (or hits min of 9 points).
-    for (CGFloat size = 20; size >= 9; size--) {
+    for (NSInteger size = 20; size >= 9; size--) {
         font = [font fontWithSize:size];
         CGSize sizeToFit;
 
@@ -175,20 +175,20 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
-                             _label.alpha = 0;
-                             _customBackgroundView.alpha = 0;
-                             _checkmark.alpha = 1;
-                             _selectedLabel.alpha = 1;
-                             _customSelectedBackgroundView.alpha = 1;
+                             self->_label.alpha = 0;
+                             self->_customBackgroundView.alpha = 0;
+                             self->_checkmark.alpha = 1;
+                             self->_selectedLabel.alpha = 1;
+                             self->_customSelectedBackgroundView.alpha = 1;
                          }
                          completion:^(BOOL finished) {
-                             _checkmarkLeadingSpace.constant = 20;
+                             self->_checkmarkLeadingSpace.constant = 20;
                              [UIView animateWithDuration:duration * 0.5
                                                    delay:0
                                                  options:UIViewAnimationOptionCurveEaseOut
                                               animations:^{
                                                   [self.contentView layoutIfNeeded];
-                                                  _selectedLabelLeadingSpace.constant = 46;
+                                                  self->_selectedLabelLeadingSpace.constant = 46;
                                                   [UIView animateWithDuration:duration * 0.5 * 0.5
                                                                         delay:duration * 0.5 * 0.5
                                                                       options:0
@@ -206,11 +206,11 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^{
-                             _checkmark.alpha = 0;
-                             _selectedLabel.alpha = 0;
-                             _customSelectedBackgroundView.alpha = 0;
-                             _label.alpha = 1;
-                             _customBackgroundView.alpha = 1;
+                             self->_checkmark.alpha = 0;
+                             self->_selectedLabel.alpha = 0;
+                             self->_customSelectedBackgroundView.alpha = 0;
+                             self->_label.alpha = 1;
+                             self->_customBackgroundView.alpha = 1;
                              [self.contentView layoutIfNeeded];
                          }
                          completion:completion];
@@ -373,8 +373,8 @@ typedef NS_ENUM(NSInteger, MPSurveyTableViewCellPosition) {
         shouldChange = newLength <= 255;
         if (shouldChange) {
             [UIView animateWithDuration:0.3 animations:^{
-                _charactersLeftLabel.text = [NSString stringWithFormat:@"%@ character%@ left", @(255 - newLength), (255 - newLength == 1) ? @"": @"s"];
-                _charactersLeftLabel.alpha = (newLength > 155) ? 1 : 0;
+                self->_charactersLeftLabel.text = [NSString stringWithFormat:@"%@ character%@ left", @(255 - newLength), (255 - newLength == 1) ? @"": @"s"];
+                self->_charactersLeftLabel.alpha = (newLength > 155) ? 1 : 0;
             }];
         }
     }

@@ -258,7 +258,7 @@ static Mixpanel *sharedInstance = nil;
 - (void)setCurrentRadio
 {
     dispatch_async(self.serialQueue, ^(){
-        _automaticProperties[@"$radio"] = [self currentRadio];
+        self->_automaticProperties[@"$radio"] = [self currentRadio];
     });
 }
 
@@ -640,7 +640,7 @@ static Mixpanel *sharedInstance = nil;
     dispatch_async(self.serialQueue, ^{
         MixpanelDebug(@"%@ flush starting", self);
 
-        __strong id<MixpanelDelegate> strongDelegate = _delegate;
+        __strong id<MixpanelDelegate> strongDelegate = self->_delegate;
         if (strongDelegate != nil && [strongDelegate respondsToSelector:@selector(mixpanelWillFlush:)] && ![strongDelegate mixpanelWillFlush:self]) {
             MixpanelDebug(@"%@ flush deferred by delegate", self);
             return;
@@ -965,7 +965,7 @@ static Mixpanel *sharedInstance = nil;
             return;
         }
 
-        if (!_surveys || !_notifications) {
+        if (!self->_surveys || !self->_notifications) {
             MixpanelDebug(@"%@ decide cache not found, starting network request", self);
 
             NSString *params = [NSString stringWithFormat:@"version=1&lib=iphone&token=%@&distinct_id=%@", self.apiToken, MPURLEncode(self.people.distinctId)];
@@ -1023,8 +1023,8 @@ static Mixpanel *sharedInstance = nil;
         }
 
         NSMutableArray *unseenSurveys = [NSMutableArray array];
-        for (MPSurvey *survey in _surveys) {
-            if ([_shownSurveyCollections member:@(survey.collectionID)] == nil) {
+        for (MPSurvey *survey in self->_surveys) {
+            if ([self->_shownSurveyCollections member:@(survey.collectionID)] == nil) {
                 [unseenSurveys addObject:survey];
             }
         }
@@ -1033,10 +1033,10 @@ static Mixpanel *sharedInstance = nil;
         BOOL portraitIsNotSupported = ![supportedOrientations containsObject:@"UIInterfaceOrientationPortrait"];
         
         NSMutableArray *unseenNotifications = [NSMutableArray array];
-        for (MPNotification *notification in _notifications) {
+        for (MPNotification *notification in self->_notifications) {
             if (portraitIsNotSupported && [notification.type isEqualToString:@"takeover"]) {
                 MixpanelLog(@"%@ takeover notifications are not supported in landscape-only apps: %@", self, notification);
-            } else if ([_shownNotifications member:@(notification.ID)] == nil) {
+            } else if ([self->_shownNotifications member:@(notification.ID)] == nil) {
                 [unseenNotifications addObject:notification];
             }
         }
@@ -1092,9 +1092,9 @@ static Mixpanel *sharedInstance = nil;
 {
     if (survey) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (_currentlyShowingSurvey) {
+            if (self->_currentlyShowingSurvey) {
                 MixpanelLog(@"%@ already showing survey: %@", self, _currentlyShowingSurvey);
-            } else if (_currentlyShowingNotification) {
+            } else if (self->_currentlyShowingNotification) {
                 MixpanelLog(@"%@ already showing in-app notification: %@", self, _currentlyShowingNotification);
             } else {
                 self.currentlyShowingSurvey = survey;
@@ -1224,9 +1224,9 @@ static Mixpanel *sharedInstance = nil;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (_currentlyShowingNotification) {
+        if (self->_currentlyShowingNotification) {
             MixpanelLog(@"%@ already showing in-app notification: %@", self, _currentlyShowingNotification);
-        } else if (_currentlyShowingSurvey) {
+        } else if (self->_currentlyShowingSurvey) {
             MixpanelLog(@"%@ already showing survey: %@", self, _currentlyShowingSurvey);
         } else {
             self.currentlyShowingNotification = notification;
