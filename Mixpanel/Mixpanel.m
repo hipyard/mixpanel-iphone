@@ -1499,6 +1499,7 @@ static Mixpanel *sharedInstance = nil;
 {
     NSAssert(properties != nil, @"properties must not be nil");
     for (id v in [properties allValues]) {
+        (void)v;
         NSAssert([v isKindOfClass:[NSArray class]],
                  @"%@ union property values should be NSArray. found: %@", self, v);
     }
